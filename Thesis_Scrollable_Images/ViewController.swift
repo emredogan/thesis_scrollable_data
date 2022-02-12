@@ -39,8 +39,13 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "photo_cell", for: indexPath) as! PostTableViewCell
+        
+        let url = posts[indexPath.row].urls!["raw"]
+        
+        let description = posts[indexPath.row].description
     
-        cell.postLabel?.text = posts[indexPath.row].urls["raw"]
+        cell.postLabel?.text = description
+        cell.postImageView.setImage(imageUrl: url!)
 
         return cell
     }

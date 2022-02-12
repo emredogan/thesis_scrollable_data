@@ -7,5 +7,6 @@ target 'Thesis_Scrollable_Images' do
 
   # Pods for Thesis_Scrollable_Images
 pod 'Alamofire', '~> 5.5'
+pod 'Kingfisher', '~> 7.0'
 
 end

@@ -8,6 +8,7 @@
 import Foundation
 
 struct Post: Decodable {
-    let id: String
-    let urls: [String: String]
+    let id: String?
+    let urls: [String: String]?
+    let description: String?
 }
