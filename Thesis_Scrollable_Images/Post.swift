@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct Post: Decodable {
+    let id: String
+    let urls: [String: String]
+}
