@@ -20,10 +20,16 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         
         let networkingClient: NetworkingClient = NetworkingClient()
-        networkingClient.execute { response in
-            let responsePosts = response
-            self.posts = responsePosts
-            self.tableView.reloadData()
+        networkingClient.execute { result in
+            
+            switch result {
+            case .success(let responsePosts):
+                self.posts = responsePosts
+                self.tableView.reloadData()
+            case .failure(let error):
+                print("ERROR - Getting data from the network client ", error)
+            }
+            
         }
     }
 }
