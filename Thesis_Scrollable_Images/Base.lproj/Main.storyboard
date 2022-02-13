@@ -16,27 +16,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="400" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ezt-ik-1bY">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="600" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ezt-ik-1bY">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="photo_cell" id="Gvy-eL-qis" customClass="PostTableViewCell" customModule="Thesis_Scrollable_Images" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="400"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="600"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gvy-eL-qis" id="YCG-ix-aES" customClass="PostTableViewCell" customModule="Thesis_Scrollable_Images" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="600"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="wD0-5c-Vlg">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" id="wD0-5c-Vlg">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="600"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dcl-je-pcV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="279.5"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DA7-Qh-FnY">
+                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ykE-y4-qc4">
-                                                            <rect key="frame" x="0.0" y="279.5" width="414" height="20.5"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dcl-je-pcV">
+                                                            <rect key="frame" x="0.0" y="200" width="414" height="200"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ykE-y4-qc4">
+                                                            <rect key="frame" x="0.0" y="400" width="414" height="200"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -54,6 +59,7 @@
                                         <connections>
                                             <outlet property="postImageView" destination="dcl-je-pcV" id="CjC-Fy-9jw"/>
                                             <outlet property="postLabel" destination="ykE-y4-qc4" id="lgh-wM-nEq"/>
+                                            <outlet property="secondImageView" destination="DA7-Qh-FnY" id="7VK-sR-6kz"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -47,12 +47,14 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "photo_cell", for: indexPath) as! PostTableViewCell
         
         let url = posts[indexPath.row].urls!["raw"]
+        let url2 = posts[indexPath.row].urls!["full"]
         
         let description = posts[indexPath.row].description
-    
+        
         cell.postLabel?.text = description
         cell.postImageView.setImage(imageUrl: url!)
-
+        cell.secondImageView.setImage(imageUrl: url2!)
+        
         return cell
     }
     
