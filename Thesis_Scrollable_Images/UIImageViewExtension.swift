@@ -12,6 +12,8 @@ import Kingfisher
 extension UIImageView {
     func setImage(imageUrl: String) {
         print("Setting image with KingFisher")
-        self.kf.setImage(with:URL(string: imageUrl))
+        kf.indicatorType = .activity
+        let image = UIImage(named: "default_profile_icon")
+        self.kf.setImage(with:URL(string: imageUrl), placeholder: image)
     }
 }

@@ -9,9 +9,4 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postImageView: UIImageView!
-    @IBOutlet weak var postLabel: UILabel!
-    @IBOutlet weak var secondImageView: UIImageView!
-    
-    
-    
 }
