@@ -18,6 +18,16 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
+        
+        // IGNORE THE SAFE AREA
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+
         
         let networkingClient: NetworkingClient = NetworkingClient()
         networkingClient.execute { result in
@@ -50,8 +60,6 @@ extension ViewController: UITableViewDataSource {
             print("KING ", indexPath.row)
             cell.postImageView.setImage(imageUrl: urlArray[indexPath.row].absoluteString)
         }
-        
-        
         return cell
     }
     
