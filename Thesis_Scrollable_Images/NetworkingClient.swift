@@ -5,14 +5,12 @@
 //  Created by Emre Dogan on 12/02/2022.
 //
 import Foundation
-import Alamofire
 import Firebase
-import SwiftUI
 
 class NetworkingClient {
     var urlArray = [URL]()
     
-    typealias CompletionHandler = (Result<[URL], AFError>) -> Void
+    typealias CompletionHandler = (Result<[URL], Error>) -> Void
     func execute(completionHandler: @escaping CompletionHandler){
         // Get a reference to the storage service using the default Firebase App
         let storage = Storage.storage()
@@ -21,7 +19,7 @@ class NetworkingClient {
         let storageRef = storage.reference()
         
         // Create a reference to the file you want to download
-        let starsRef = storageRef.child("images/copenhagen.jpg")
+        let starsRef = storageRef.child("images/emre.jpg")
         let images = starsRef.parent()
         images?.listAll(completion: { result, error in
             let referenceURI = result.items

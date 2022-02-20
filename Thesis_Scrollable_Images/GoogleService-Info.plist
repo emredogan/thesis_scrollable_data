@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1071383710452-1bn1tqc67dmiflbusl480m5t2n31evjh.apps.googleusercontent.com</string>
+	<string>1057785801461-3t1hnfqsoilb70o3qrp0mdhn6s0nsvei.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1071383710452-1bn1tqc67dmiflbusl480m5t2n31evjh</string>
+	<string>com.googleusercontent.apps.1057785801461-3t1hnfqsoilb70o3qrp0mdhn6s0nsvei</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDVipfqH5pj1AOb5Teev0p24lSy0gZT8Uk</string>
+	<string>AIzaSyCPUVHzDxYkPMDwSDT3_0662vzR_I77emk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1071383710452</string>
+	<string>1057785801461</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.tikitakamobile.Thesis-Scrollable-Images</string>
 	<key>PROJECT_ID</key>
-	<string>scrollableimages</string>
+	<string>scrollimageslimit</string>
 	<key>STORAGE_BUCKET</key>
-	<string>scrollableimages.appspot.com</string>
+	<string>scrollimageslimit.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1071383710452:ios:41a535d1835cfcb17faca1</string>
+	<string>1:1057785801461:ios:52102fc388c08d918673bc</string>
 </dict>
 </plist>

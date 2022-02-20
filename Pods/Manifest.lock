@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (5.5.0)
   - Firebase/CoreOnly (8.12.1):
     - FirebaseCore (= 8.12.1)
   - Firebase/Storage (8.12.1):
@@ -35,13 +34,11 @@ PODS:
   - PromisesObjC (2.0.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 5.5)
   - Firebase/Storage
   - Kingfisher (~> 7.0)
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - Firebase
     - FirebaseCore
     - FirebaseCoreDiagnostics
@@ -54,7 +51,6 @@ SPEC REPOS:
     - PromisesObjC
 
 SPEC CHECKSUMS:
-  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   Firebase: 580d09e8edafc3073ebf09c03fd42e4d80d35fe9
   FirebaseCore: 8138de860a90ca7eec5e324da5788fb0ebf1d93c
   FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
@@ -66,6 +62,6 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
-PODFILE CHECKSUM: 34f40b5759b9d8eacda93dd02b333e5c496119ac
+PODFILE CHECKSUM: 4d11ffb4fa778b438e2cafc4560deb1d7aff627f
 
 COCOAPODS: 1.11.2
