@@ -18,7 +18,9 @@ extension UIImageView {
         
         let url = URL(string: imageUrl)
         let processor = DownsamplingImageProcessor(size: self.bounds.size)
-        self.kf.setImage(with: url, placeholder: UIImage(named: "default_profile_icon"), options: [
+        self.kf.setImage(with: url, options: [
+            .loadDiskFileSynchronously,
+            .keepCurrentImageWhileLoading,
             .processor(processor),
             .cacheOriginalImage,
             .scaleFactor(UIScreen.main.scale),
@@ -26,3 +28,4 @@ extension UIImageView {
         ])
     }
 }
+ 
