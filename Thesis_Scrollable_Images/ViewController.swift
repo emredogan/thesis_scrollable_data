@@ -32,7 +32,7 @@ class ViewController: UIViewController {
                 
                 
                 self.tableView.reloadData()
-
+                
                 
             case .failure(let error):
                 print("ERROR - Getting data from the network client ", error)
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         } else {
             self.limitedURlArray = Array(self.urlArray[0 ..< self.currentLimitCycleNumber])
         }
-
+        
     }
 }
 
@@ -95,43 +95,31 @@ extension ViewController: UITableViewDataSource {
         spinner.startAnimating()
         return footerView
     }
-
     
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        /*let height = scrollView.frame.size.height
-            let contentYoffset = scrollView.contentOffset.y
-            let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-            if distanceFromBottom < height {
-                print("fetch more you reached end of the table")
-                isPaginating = true
-                return
-            } */
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if(isPaginating) {
             return
         }
-        let position = scrollView.contentOffset.y
-        if position > tableView.contentSize.height-150-scrollView.contentOffset.y {
-            if(isPaginating == false) {
+        
+        if(isPaginating == false) {
+            if indexPath.row + 3 == limitedURlArray.count {
                 print("fetch more")
                 self.tableView.tableFooterView = createSpinnerFooter()
                 currentLimitCycleNumber = currentLimitCycleNumber + 4
                 isPaginating = true
                 changeLimits()
-
+                
                 
                 // SOME TIME
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.isPaginating = false
                     self.tableView.tableFooterView = nil
                     self.tableView.reloadData()
-
+                    
                 }
             }
             
         }
     }
-    
-    
 }
 

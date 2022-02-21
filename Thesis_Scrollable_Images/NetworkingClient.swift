@@ -19,7 +19,7 @@ class NetworkingClient {
         let storageRef = storage.reference()
         
         // Create a reference to the file you want to download
-        let starsRef = storageRef.child("images/IMG-20200508-WA0008.jpeg")
+        let starsRef = storageRef.child("images/IMG-20190927-WA0000.jpeg")
         let images = starsRef.parent()
         images?.listAll(completion: { result, error in
             let referenceURI = result.items
