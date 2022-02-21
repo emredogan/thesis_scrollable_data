@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var currentLimitCycleNumber = 15
+    var currentLimitCycleNumber = 10
     private var isPaginating = false
     
     var urlArray = [URL]()
@@ -87,7 +87,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     private func createSpinnerFooter() -> UIView {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 300))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 175))
         
         let spinner  = UIActivityIndicatorView()
         spinner.center = footerView.center
@@ -99,14 +99,14 @@ extension ViewController: UITableViewDataSource {
     
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let height = scrollView.frame.size.height
+        /*let height = scrollView.frame.size.height
             let contentYoffset = scrollView.contentOffset.y
             let distanceFromBottom = scrollView.contentSize.height - contentYoffset
             if distanceFromBottom < height {
                 print("fetch more you reached end of the table")
                 isPaginating = true
                 return
-            }
+            } */
         if(isPaginating) {
             return
         }
@@ -115,13 +115,13 @@ extension ViewController: UITableViewDataSource {
             if(isPaginating == false) {
                 print("fetch more")
                 self.tableView.tableFooterView = createSpinnerFooter()
-                currentLimitCycleNumber = currentLimitCycleNumber + 12
+                currentLimitCycleNumber = currentLimitCycleNumber + 4
                 isPaginating = true
                 changeLimits()
 
                 
                 // SOME TIME
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.isPaginating = false
                     self.tableView.tableFooterView = nil
                     self.tableView.reloadData()
