@@ -9,6 +9,7 @@ import Firebase
 
 class NetworkingClient {
     var urlArray = [URL]()
+    let numberOfPicturesToDownload = 25
     
     typealias CompletionHandler = (Result<[URL], Error>) -> Void
     func execute(completionHandler: @escaping CompletionHandler){
@@ -19,9 +20,8 @@ class NetworkingClient {
         let storageRef = storage.reference()
         
         // Create a reference to the file you want to download
-        let starsRef = storageRef.child("images/IMG-20190927-WA0000.jpeg")
-        let images = starsRef.parent()
-        images?.listAll(completion: { result, error in
+        let imagesRef = storageRef.child("images")
+        imagesRef.listAll(completion: { result, error in
             let referenceURI = result.items
             
             for reference in referenceURI {
@@ -33,7 +33,10 @@ class NetworkingClient {
                     } else {
                         if let url = url {
                             self.urlArray.append(url)
-                            completionHandler(.success(self.urlArray))
+                            if(self.urlArray.count == self.numberOfPicturesToDownload) {
+                                completionHandler(.success(self.urlArray))
+                                return
+                            }
                         }
                     }
                 }

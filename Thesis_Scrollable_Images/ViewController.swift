@@ -6,16 +6,67 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ViewController: UIViewController {
-    
     @IBOutlet weak var tableView: UITableView!
-    
-    var currentLimitCycleNumber = 10
     private var isPaginating = false
+    var currentStartIndex = 0
+    var currentEndIndex = 5
     
     var urlArray = [URL]()
-    var limitedURlArray = [URL]()
+    var images = [UIImage]()
+    
+    func startMultipleImageDownload() {
+        let currentSize = self.images.count
+        
+        for (index, element) in urlArray.enumerated() {
+            if(index >= currentStartIndex && index < currentEndIndex) {
+                isPaginating = true
+                
+                let resource = ImageResource(downloadURL:element)
+                
+                self.tableView.tableFooterView = createSpinnerFooter()
+                
+                KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                    switch result {
+                    case .success(let value):
+                        //print("Image: \(value.image). Got from: \(value.cacheType)")
+                        self.images.append(value.image)
+                        if self.images.count == currentSize+5 {
+                            self.isPaginating = false
+                            self.tableView.reloadData()
+                            if(self.currentStartIndex + 5 <= self.urlArray.count-1) {
+                                self.currentStartIndex = self.currentStartIndex + 5
+                                
+                            }
+                            
+                            if(self.currentEndIndex + 5 > self.urlArray.count-1) {
+                                self.currentEndIndex = self.urlArray.count-1
+                                
+                            } else {
+                                self.currentEndIndex = self.currentEndIndex + 5
+                                
+                            }
+                            print("RELOAD TABLE VIEW")
+                            self.isPaginating = false
+                            self.tableView.tableFooterView = nil
+                            
+                            return
+                        }
+                    case .failure(let error):
+                        print("Error: \(error)")
+                        self.isPaginating = false
+                        self.tableView.tableFooterView = nil
+                    }
+                }
+            } else {
+                continue
+            }
+            
+            
+        }
+    }
     
     func makeANetworkCall() {
         let networkingClient: NetworkingClient = NetworkingClient()
@@ -24,20 +75,10 @@ class ViewController: UIViewController {
             switch result {
             case .success(let responsePosts):
                 self.urlArray = responsePosts
-                if(self.urlArray.count <= self.currentLimitCycleNumber) {
-                    self.limitedURlArray = self.urlArray
-                } else {
-                    self.limitedURlArray = Array(self.urlArray[0 ..< self.currentLimitCycleNumber])
-                }
-                
-                
-                self.tableView.reloadData()
-                
-                
+                self.startMultipleImageDownload()
             case .failure(let error):
                 print("ERROR - Getting data from the network client ", error)
             }
-            
         }
     }
     
@@ -58,15 +99,6 @@ class ViewController: UIViewController {
         
         makeANetworkCall()
     }
-    
-    func changeLimits() {
-        if(self.urlArray.count <= self.currentLimitCycleNumber) {
-            self.limitedURlArray = self.urlArray
-        } else {
-            self.limitedURlArray = Array(self.urlArray[0 ..< self.currentLimitCycleNumber])
-        }
-        
-    }
 }
 
 extension ViewController: UITableViewDelegate {
@@ -75,13 +107,13 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return limitedURlArray.count
+        return images.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "photo_cell", for: indexPath) as! PostTableViewCell
         if(urlArray.count > 0) {
-            cell.postImageView.setImage(imageUrl: urlArray[indexPath.row].absoluteString)
+            cell.postImageView.image = images[indexPath.row]
         }
         return cell
     }
@@ -102,21 +134,8 @@ extension ViewController: UITableViewDataSource {
         }
         
         if(isPaginating == false) {
-            if indexPath.row + 3 == limitedURlArray.count {
-                print("fetch more")
-                self.tableView.tableFooterView = createSpinnerFooter()
-                currentLimitCycleNumber = currentLimitCycleNumber + 4
-                isPaginating = true
-                changeLimits()
-                
-                
-                // SOME TIME
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.isPaginating = false
-                    self.tableView.tableFooterView = nil
-                    self.tableView.reloadData()
-                    
-                }
+            if indexPath.row + 2 == images.count {
+                startMultipleImageDownload()
             }
             
         }
