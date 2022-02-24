@@ -9,7 +9,7 @@ import Firebase
 
 class NetworkingClient {
     var urlArray = [URL]()
-    let numberOfPicturesToDownload = 25
+    let numberOfPicturesToDownload = 100
     
     typealias CompletionHandler = (Result<[URL], Error>) -> Void
     func execute(completionHandler: @escaping CompletionHandler){

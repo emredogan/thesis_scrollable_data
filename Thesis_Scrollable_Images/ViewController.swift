@@ -69,6 +69,9 @@ class ViewController: UIViewController {
     }
     
     func makeANetworkCall() {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.startAnimating()
+        tableView.backgroundView = spinner
         let networkingClient: NetworkingClient = NetworkingClient()
         networkingClient.execute { result in
             
