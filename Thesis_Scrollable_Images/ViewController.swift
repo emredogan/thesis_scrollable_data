@@ -33,6 +33,10 @@ class ViewController: UIViewController {
                     case .success(let value):
                         //print("Image: \(value.image). Got from: \(value.cacheType)")
                         self.images.append(value.image)
+
+                        if self.images.count >= self.urlArray.count - 10 {
+                            self.tableView.tableFooterView = nil
+                        }
                         if self.images.count == currentSize+5 {
                             self.isPaginating = false
                             self.tableView.reloadData()
