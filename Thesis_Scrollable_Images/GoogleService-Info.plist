@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>68854230113-ovk822q7s78ipe0jtf3rfgckvltu1s9g.apps.googleusercontent.com</string>
+	<string>40604012837-mjkookhivdh4ofjlu5mfq7sq69h08dqv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.68854230113-ovk822q7s78ipe0jtf3rfgckvltu1s9g</string>
+	<string>com.googleusercontent.apps.40604012837-mjkookhivdh4ofjlu5mfq7sq69h08dqv</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDX_UipJDe5nvdiFI6Wm7rfjCmYJduoM1M</string>
+	<string>AIzaSyA39-bvVIT_oWzxln4K0eDvFXbSE8TqsuE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>68854230113</string>
+	<string>40604012837</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.tikitakamobile.Thesis-Scrollable-Images</string>
 	<key>PROJECT_ID</key>
-	<string>scroll21febthird</string>
+	<string>fetching-thesis</string>
 	<key>STORAGE_BUCKET</key>
-	<string>scroll21febthird.appspot.com</string>
+	<string>fetching-thesis.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:68854230113:ios:5116d48d1542c1ca4f4e20</string>
+	<string>1:40604012837:ios:ee9eb07f6d74d847304acc</string>
 </dict>
 </plist>
