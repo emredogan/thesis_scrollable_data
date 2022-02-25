@@ -377,6 +377,7 @@
 				DEVELOPMENT_TEAM = BH7ATPEKS6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Thesis_Scrollable_Images/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "App 1";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -407,6 +408,7 @@
 				DEVELOPMENT_TEAM = BH7ATPEKS6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Thesis_Scrollable_Images/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "App 1";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
