@@ -8,4 +8,5 @@ target 'Thesis_Scrollable_Images' do
   # Pods for Thesis_Scrollable_Images
 pod 'Kingfisher', '~> 7.0'
 pod 'Firebase/Storage'
+pod 'Firebase/Performance'
 end

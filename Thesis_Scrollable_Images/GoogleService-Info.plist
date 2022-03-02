@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>40604012837-mjkookhivdh4ofjlu5mfq7sq69h08dqv.apps.googleusercontent.com</string>
+	<string>1003027583328-59n5v581dq9au3h611et62c71u775p3g.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.40604012837-mjkookhivdh4ofjlu5mfq7sq69h08dqv</string>
+	<string>com.googleusercontent.apps.1003027583328-59n5v581dq9au3h611et62c71u775p3g</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA39-bvVIT_oWzxln4K0eDvFXbSE8TqsuE</string>
+	<string>AIzaSyBkIsx0lglbVE2v87HmjdUQveo6rfUKsYM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>40604012837</string>
+	<string>1003027583328</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.tikitakamobile.Thesis-Scrollable-Images</string>
 	<key>PROJECT_ID</key>
-	<string>fetching-thesis</string>
+	<string>flutter-fetching-ce043</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fetching-thesis.appspot.com</string>
+	<string>flutter-fetching-ce043.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:40604012837:ios:ee9eb07f6d74d847304acc</string>
+	<string>1:1003027583328:ios:11e2b8ca727ae2b7ff8e05</string>
 </dict>
 </plist>

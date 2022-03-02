@@ -7,21 +7,59 @@
 
 import UIKit
 import Kingfisher
+import FirebasePerformance
+
 
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     private var isPaginating = false
     var currentStartIndex = 0
-    var currentEndIndex = 5
+    var currentEndIndex = 4
+    var startTracing4images = false
+    var trace4images: FirebasePerformance.Trace?
     
     var urlArray = [URL]()
     var images = [UIImage]()
+    
+    func clearCache(){
+        let trace = Performance.startTrace(name: "clearing cache")
+
+        let cacheURL =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let fileManager = FileManager.default
+        do {
+            // Get the directory contents urls (including subfolders urls)
+            let directoryContents = try FileManager.default.contentsOfDirectory( at: cacheURL, includingPropertiesForKeys: nil, options: [])
+            for file in directoryContents {
+                do {
+                    try fileManager.removeItem(at: file)
+                }
+                catch let error as NSError {
+                    debugPrint("Ooops! Something went wrong: \(error)")
+                }
+
+            }
+            trace?.stop()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
     
     func startMultipleImageDownload() {
         let currentSize = self.images.count
         
         for (index, element) in urlArray.enumerated() {
             if(index >= currentStartIndex && index < currentEndIndex) {
+                if(startTracing4images == false) {
+                    trace4images = Performance.startTrace(name: "Downloading 4 images")
+                    startTracing4images = true
+                    print("START 4 image")
+
+                }
+                
+
+                
+                let traceOneImage = Performance.startTrace(name: "Downloading 1 image")
+
                 isPaginating = true
                 
                 let resource = ImageResource(downloadURL:element)
@@ -33,28 +71,34 @@ class ViewController: UIViewController {
                     case .success(let value):
                         //print("Image: \(value.image). Got from: \(value.cacheType)")
                         self.images.append(value.image)
+                        traceOneImage?.stop()
+                        print("STOP 1 image")
+
 
                         if self.images.count >= self.urlArray.count - 10 {
                             self.tableView.tableFooterView = nil
                         }
-                        if self.images.count == currentSize+5 {
+                        if self.images.count == currentSize+4 {
                             self.isPaginating = false
                             self.tableView.reloadData()
-                            if(self.currentStartIndex + 5 <= self.urlArray.count-1) {
-                                self.currentStartIndex = self.currentStartIndex + 5
+                            if(self.currentStartIndex + 4 <= self.urlArray.count-1) {
+                                self.currentStartIndex = self.currentStartIndex + 4
                                 
                             }
                             
-                            if(self.currentEndIndex + 5 > self.urlArray.count-1) {
+                            if(self.currentEndIndex + 4 > self.urlArray.count-1) {
                                 self.currentEndIndex = self.urlArray.count-1
                                 
                             } else {
-                                self.currentEndIndex = self.currentEndIndex + 5
+                                self.currentEndIndex = self.currentEndIndex + 4
                                 
                             }
                             print("RELOAD TABLE VIEW")
                             self.isPaginating = false
                             self.tableView.tableFooterView = nil
+                            self.trace4images?.stop()
+                            self.startTracing4images = false
+                            print("STOP 4 images")
                             
                             return
                         }
@@ -91,6 +135,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        clearCache()
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
@@ -141,7 +186,7 @@ extension ViewController: UITableViewDataSource {
         }
         
         if(isPaginating == false) {
-            if indexPath.row + 2 == images.count {
+            if indexPath.row + 1 == images.count {
                 startMultipleImageDownload()
             }
             
