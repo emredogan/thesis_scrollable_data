@@ -8,11 +8,19 @@ import Foundation
 import Firebase
 
 class NetworkingClient {
+    var imageSizeString = "632kb"
+    init(size: String) {
+        imageSizeString = size
+        urlArray.removeAll()
+    }
+    
     var urlArray = [URL]()
-    let numberOfPicturesToDownload = 31
+    let numberOfPicturesToDownload = 30
     
     typealias CompletionHandler = (Result<[URL], Error>) -> Void
+    
     func execute(completionHandler: @escaping CompletionHandler){
+        print("DOWNLOADING URLS FOR ", imageSizeString)
         let trace = Performance.startTrace(name: "Downloading urls")
 
         // Get a reference to the storage service using the default Firebase App
@@ -22,7 +30,7 @@ class NetworkingClient {
         let storageRef = storage.reference()
         
         // Create a reference to the file you want to download
-        let imagesRef = storageRef.child("1038kb")
+        let imagesRef = storageRef.child(imageSizeString)
         imagesRef.listAll(completion: { result, error in
             let referenceURI = result.items
             
@@ -34,8 +42,10 @@ class NetworkingClient {
                         print(error)
                     } else {
                         if let url = url {
+                            print("PRINTING THE URL ", url)
                             self.urlArray.append(url)
                             if(self.urlArray.count == self.numberOfPicturesToDownload) {
+                                print("MY IMAGE SIZE", self.imageSizeString)
                                 trace?.stop()
                                 completionHandler(.success(self.urlArray))
                                 return

@@ -16,44 +16,71 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="300" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ezt-ik-1bY">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="photo_cell" id="T29-QP-52p" customClass="PostTableViewCell" customModule="Thesis_Scrollable_Images" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="300"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T29-QP-52p" id="6I9-Wc-kIc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zqb-kO-uij">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="zqb-kO-uij" secondAttribute="bottom" id="5YS-E4-faZ"/>
-                                                <constraint firstItem="zqb-kO-uij" firstAttribute="centerX" secondItem="6I9-Wc-kIc" secondAttribute="centerX" id="TJo-ar-OMn"/>
-                                                <constraint firstItem="zqb-kO-uij" firstAttribute="top" secondItem="6I9-Wc-kIc" secondAttribute="top" id="ZQr-do-lEP"/>
-                                                <constraint firstItem="zqb-kO-uij" firstAttribute="leading" secondItem="6I9-Wc-kIc" secondAttribute="leading" id="lxu-Qn-wOw"/>
-                                                <constraint firstItem="zqb-kO-uij" firstAttribute="trailing" secondItem="6I9-Wc-kIc" secondAttribute="trailingMargin" constant="24" id="meg-Nv-kxh"/>
-                                                <constraint firstItem="zqb-kO-uij" firstAttribute="centerY" secondItem="6I9-Wc-kIc" secondAttribute="centerY" id="pdA-Gg-Hl9"/>
-                                                <constraint firstAttribute="trailing" secondItem="zqb-kO-uij" secondAttribute="trailing" id="sHs-oQ-eNb"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7UY-QN-etb">
+                                <rect key="frame" x="0.0" y="44" width="110" height="852"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="OLo-xp-XiJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="110" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="632"/>
+                                            <segment title="1038"/>
+                                            <segment title="1450"/>
+                                            <segment title="1926"/>
+                                            <segment title="2470"/>
+                                        </segments>
                                         <connections>
-                                            <outlet property="postImageView" destination="zqb-kO-uij" id="RP2-Yv-edq"/>
+                                            <action selector="segmentChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="prd-Ka-YgJ"/>
                                         </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <sections/>
-                            </tableView>
+                                    </segmentedControl>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="300" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ezt-ik-1bY">
+                                        <rect key="frame" x="0.0" y="31" width="110" height="821"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="photo_cell" id="T29-QP-52p" customClass="PostTableViewCell" customModule="Thesis_Scrollable_Images" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="44.5" width="110" height="300"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T29-QP-52p" id="6I9-Wc-kIc">
+                                                    <rect key="frame" x="0.0" y="0.0" width="110" height="300"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zqb-kO-uij">
+                                                            <rect key="frame" x="0.0" y="0.0" width="110" height="300"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="zqb-kO-uij" secondAttribute="bottom" id="5YS-E4-faZ"/>
+                                                        <constraint firstItem="zqb-kO-uij" firstAttribute="centerX" secondItem="6I9-Wc-kIc" secondAttribute="centerX" id="TJo-ar-OMn"/>
+                                                        <constraint firstItem="zqb-kO-uij" firstAttribute="top" secondItem="6I9-Wc-kIc" secondAttribute="top" id="ZQr-do-lEP"/>
+                                                        <constraint firstItem="zqb-kO-uij" firstAttribute="leading" secondItem="6I9-Wc-kIc" secondAttribute="leading" id="lxu-Qn-wOw"/>
+                                                        <constraint firstItem="zqb-kO-uij" firstAttribute="trailing" secondItem="6I9-Wc-kIc" secondAttribute="trailingMargin" constant="24" id="meg-Nv-kxh"/>
+                                                        <constraint firstItem="zqb-kO-uij" firstAttribute="centerY" secondItem="6I9-Wc-kIc" secondAttribute="centerY" id="pdA-Gg-Hl9"/>
+                                                        <constraint firstAttribute="trailing" secondItem="zqb-kO-uij" secondAttribute="trailing" id="sHs-oQ-eNb"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="postImageView" destination="zqb-kO-uij" id="RP2-Yv-edq"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <sections/>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="kbt-xc-kbF"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7UY-QN-etb" firstAttribute="top" secondItem="kbt-xc-kbF" secondAttribute="top" id="2oP-tp-uHS"/>
+                            <constraint firstItem="7UY-QN-etb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BSW-od-3ly"/>
+                            <constraint firstItem="7UY-QN-etb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="JxL-C8-bfv"/>
+                            <constraint firstAttribute="bottom" secondItem="7UY-QN-etb" secondAttribute="bottom" id="bTr-me-0an"/>
+                            <constraint firstItem="7UY-QN-etb" firstAttribute="leading" secondItem="kbt-xc-kbF" secondAttribute="leading" id="dK9-Eh-wdU"/>
+                            <constraint firstItem="kbt-xc-kbF" firstAttribute="trailing" secondItem="7UY-QN-etb" secondAttribute="trailing" id="hzb-q0-ADe"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="segmentedControl" destination="OLo-xp-XiJ" id="8dV-xt-bKc"/>
                         <outlet property="tableView" destination="Ezt-ik-1bY" id="nEu-vI-rSQ"/>
                     </connections>
                 </viewController>

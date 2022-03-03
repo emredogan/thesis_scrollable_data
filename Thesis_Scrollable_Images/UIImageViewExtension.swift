@@ -14,6 +14,7 @@ extension UIImageView {
         kf.indicatorType = .activity
         let image = UIImage(named: "default_profile_icon")
         self.kf.setImage(with:URL(string: imageUrl), placeholder: image)
+        print("SETTING IMAGE TABLEVIEW RELOD")
     }
 }
  
