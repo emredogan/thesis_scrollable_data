@@ -20,7 +20,6 @@ class NetworkingClient {
     typealias CompletionHandler = (Result<[URL], Error>) -> Void
     
     func execute(completionHandler: @escaping CompletionHandler){
-        print("DOWNLOADING URLS FOR ", imageSizeString)
         let trace = Performance.startTrace(name: "Downloading urls")
 
         // Get a reference to the storage service using the default Firebase App
@@ -42,10 +41,8 @@ class NetworkingClient {
                         print(error)
                     } else {
                         if let url = url {
-                            print("PRINTING THE URL ", url)
                             self.urlArray.append(url)
                             if(self.urlArray.count == self.numberOfPicturesToDownload) {
-                                print("MY IMAGE SIZE", self.imageSizeString)
                                 trace?.stop()
                                 completionHandler(.success(self.urlArray))
                                 return

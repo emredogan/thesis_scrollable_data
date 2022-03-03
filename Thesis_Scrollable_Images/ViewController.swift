@@ -131,11 +131,7 @@ class ViewController: UIViewController {
                     if(startTracing4images == false) {
                         trace4images = Performance.startTrace(name: "Downloading 4 images")
                         startTracing4images = true
-                        print("START 4 image")
-
                     }
-                    
-
                     
                     let traceOneImage = Performance.startTrace(name: "Downloading 1 image")
 
@@ -151,14 +147,10 @@ class ViewController: UIViewController {
                             //print("Image: \(value.image). Got from: \(value.cacheType)")
                             self.images.append(value.image)
                             traceOneImage?.stop()
-                            print("STOP 1 image")
-
 
                             if self.images.count >= self.urlArray.count - 10 {
                                 self.tableView.tableFooterView = nil
                             }
-                            print("COUNTS ", self.images.count)
-                            print("COUNTS ", currentSize)
 
                             if self.images.count == currentSize+4 {
                                 self.isPaginating = false
@@ -179,8 +171,6 @@ class ViewController: UIViewController {
                                 self.tableView.tableFooterView = nil
                                 self.trace4images?.stop()
                                 self.startTracing4images = false
-                                print("STOP 4 images")
-                                
                                 if(self.images.count % 4 == 0) {
                                     shouldDownload = false
                                 }
@@ -214,8 +204,6 @@ class ViewController: UIViewController {
             switch result {
             case .success(let responsePosts):
                 self.urlArray = responsePosts
-                print("DOWNLOADING IMAGES SINCE END OF THE FIRST CALL")
-
                 self.startMultipleImageDownload()
             case .failure(let error):
                 print("ERROR - Getting data from the network client ", error)
@@ -230,14 +218,6 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        
-        // IGNORE THE SAFE AREA
-       /* tableView.contentInsetAdjustmentBehavior = .never
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true */
         
         makeANetworkCall(size: imageSizeName)
     }
