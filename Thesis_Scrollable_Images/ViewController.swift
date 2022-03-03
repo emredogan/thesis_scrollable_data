@@ -22,79 +22,56 @@ class ViewController: UIViewController {
     var urlArray = [URL]()
     var images = [UIImage]()
     
-    var imageSizeName  = "low"
+    var imageSizeName  = "632kb"
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        clearCache()
+        // Do any additional setup after loading the view.
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        
+        makeANetworkCall(size: imageSizeName)
+    }
     
     
     @IBAction func segmentChanged(_ sender: Any) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            clearCache()
-            urlArray = [URL]()
-            images = [UIImage]()
-            tableView.setContentOffset(.zero, animated: true)
-            tableView.reloadData()
-            isPaginating = false
-            currentStartIndex = 0
-            currentEndIndex = 4
-            startTracing4images = false
             imageSizeName = "632kb"
-            makeANetworkCall(size: imageSizeName)
             break
         case 1 :
-            clearCache()
-            urlArray = [URL]()
-            images = [UIImage]()
-            tableView.setContentOffset(.zero, animated: true)
-            tableView.reloadData()
-            isPaginating = false
-            currentStartIndex = 0
-            currentEndIndex = 4
-            startTracing4images = false
             imageSizeName = "1038kb"
-            makeANetworkCall(size: imageSizeName)
             break
         case 2 :
-            clearCache()
-            urlArray = [URL]()
-            images = [UIImage]()
-            tableView.setContentOffset(.zero, animated: true)
-            tableView.reloadData()
-            isPaginating = false
-            currentStartIndex = 0
-            currentEndIndex = 4
-            startTracing4images = false
             imageSizeName = "1450kb"
-            makeANetworkCall(size: imageSizeName)
             break
         case 3 :
-            clearCache()
-            urlArray = [URL]()
-            images = [UIImage]()
-            tableView.setContentOffset(.zero, animated: true)
-            tableView.reloadData()
-            isPaginating = false
-            currentStartIndex = 0
-            currentEndIndex = 4
-            startTracing4images = false
             imageSizeName = "1926kb"
-            makeANetworkCall(size: imageSizeName)
             break
         case 4 :
-            clearCache()
-            urlArray = [URL]()
-            images = [UIImage]()
-            tableView.setContentOffset(.zero, animated: true)
-            tableView.reloadData()
-            isPaginating = false
-            currentStartIndex = 0
-            currentEndIndex = 4
-            startTracing4images = false
             imageSizeName = "2470kb"
-            makeANetworkCall(size: imageSizeName)
             break
         default:
             break
         }
+        
+        restartData()
+        
+    }
+    
+    func restartData() {
+        clearCache()
+        urlArray = [URL]()
+        images = [UIImage]()
+        tableView.setContentOffset(.zero, animated: true)
+        tableView.reloadData()
+        isPaginating = false
+        currentStartIndex = 0
+        currentEndIndex = 4
+        startTracing4images = false
+        makeANetworkCall(size: imageSizeName)
     }
     
     
@@ -121,7 +98,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func    startMultipleImageDownload() {
+    func startMultipleImageDownload() {
         let currentSize = self.images.count
         var shouldDownload = true
         
@@ -211,16 +188,7 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        clearCache()
-        // Do any additional setup after loading the view.
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        
-        makeANetworkCall(size: imageSizeName)
-    }
+    
 }
 
 extension ViewController: UITableViewDelegate {
@@ -257,7 +225,6 @@ extension ViewController: UITableViewDataSource {
         
         if(isPaginating == false) {
             if indexPath.row + 1 == images.count {
-                print("DOWNLOADING IMAGES SINCE END OF THE LIST")
                 startMultipleImageDownload()
             }
             
