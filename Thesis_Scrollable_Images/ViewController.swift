@@ -13,15 +13,15 @@ import FirebasePerformance
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    var urlArray = [URL]()
+    var images = [UIImage]()
     private var isPaginating = false
     var currentStartIndex = 0
     var currentEndIndex = 4
-    var startTracing4images = false
+    var hasStartedTracing4images = false
     var trace4images: FirebasePerformance.Trace?
-    
-    var urlArray = [URL]()
-    var images = [UIImage]()
-    
+    var trace1image: FirebasePerformance.Trace?
+    var shouldDownload = true
     var imageSizeName  = "632kb"
     
     override func viewDidLoad() {
@@ -31,10 +31,8 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        
         makeANetworkCall(size: imageSizeName)
     }
-    
     
     @IBAction func segmentChanged(_ sender: Any) {
         switch segmentedControl.selectedSegmentIndex {
@@ -56,9 +54,7 @@ class ViewController: UIViewController {
         default:
             break
         }
-        
         restartData()
-        
     }
     
     func restartData() {
@@ -70,14 +66,21 @@ class ViewController: UIViewController {
         isPaginating = false
         currentStartIndex = 0
         currentEndIndex = 4
-        startTracing4images = false
+        hasStartedTracing4images = false
         makeANetworkCall(size: imageSizeName)
+    }
+    
+    func startFirebasePerformanceTracking(keyText: String) {
+        if(hasStartedTracing4images == false) {
+            trace4images = Performance.startTrace(name: keyText)
+            hasStartedTracing4images = true
+        }
     }
     
     
     func clearCache(){
         let trace = Performance.startTrace(name: "clearing cache")
-
+        
         let cacheURL =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         let fileManager = FileManager.default
         do {
@@ -90,7 +93,7 @@ class ViewController: UIViewController {
                 catch let error as NSError {
                     debugPrint("Ooops! Something went wrong: \(error)")
                 }
-
+                
             }
             trace?.stop()
         } catch let error as NSError {
@@ -98,76 +101,92 @@ class ViewController: UIViewController {
         }
     }
     
+    func shouldHideFooter() -> Bool {
+        return images.count >= urlArray.count - 5
+    }
+    
+    func hasDownloaded4MorePictures(currentSize: Int) -> Bool {
+        return self.images.count == currentSize+4
+    }
+    
+    func updateIndexesForTheNextDownload() {
+        if(self.currentStartIndex + 4 <= self.urlArray.count-1) {
+            self.currentStartIndex = self.currentStartIndex + 4
+        }
+        
+        if(self.currentEndIndex + 4 > self.urlArray.count-1) {
+            self.currentEndIndex = self.urlArray.count-1
+            
+        } else {
+            self.currentEndIndex = self.currentEndIndex + 4
+            
+        }
+    }
+    
+    func retrieveImage(element: URL, currentSize: Int) {
+        startFirebasePerformanceTracking(keyText: "Downloading 4 images")
+        startFirebasePerformanceTracking(keyText: "Downloading 1 image")
+        activateSpinnerInTableView()
+        let resource = ImageResource(downloadURL:element)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+            switch result {
+            case .success(let value):
+                self.images.append(value.image)
+                self.stopFirebaseTracking(trace: self.trace1image)
+                self.hideSpinnerInTableView()
+                if self.hasDownloaded4MorePictures(currentSize: currentSize) {
+                    self.updateTableViewAndData()
+                    self.stopFirebaseTracking(trace: self.trace4images)
+                    if(self.images.count % 4 == 0) {
+                        self.shouldDownload = false
+                    }
+                    return
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+                self.isPaginating = false
+                self.tableView.tableFooterView = nil
+            }
+        }
+        
+    }
+    
+    func updateTableViewAndData() {
+        self.isPaginating = false
+        self.tableView.reloadData()
+        self.updateIndexesForTheNextDownload()
+        self.tableView.tableFooterView = nil
+        
+    }
+    
+    func activateSpinnerInTableView() {
+        isPaginating = true
+        self.tableView.tableFooterView = createSpinnerFooter()
+    }
+    
+    func hideSpinnerInTableView() {
+        if self.shouldHideFooter(){
+            self.tableView.tableFooterView = nil
+        }
+    }
+    
+    func stopFirebaseTracking(trace: FirebasePerformance.Trace?) {
+        self.hasStartedTracing4images = false
+        trace?.stop()
+    }
+    
     func startMultipleImageDownload() {
         let currentSize = self.images.count
-        var shouldDownload = true
+        shouldDownload = true
         
         for (index, element) in urlArray.enumerated() {
             if(shouldDownload) {
                 if(index >= currentStartIndex && index < currentEndIndex) {
-                    if(startTracing4images == false) {
-                        trace4images = Performance.startTrace(name: "Downloading 4 images")
-                        startTracing4images = true
-                    }
-                    
-                    let traceOneImage = Performance.startTrace(name: "Downloading 1 image")
-
-                    isPaginating = true
-                    
-                    let resource = ImageResource(downloadURL:element)
-                    
-                    self.tableView.tableFooterView = createSpinnerFooter()
-                    
-                    KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-                        switch result {
-                        case .success(let value):
-                            //print("Image: \(value.image). Got from: \(value.cacheType)")
-                            self.images.append(value.image)
-                            traceOneImage?.stop()
-
-                            if self.images.count >= self.urlArray.count - 10 {
-                                self.tableView.tableFooterView = nil
-                            }
-
-                            if self.images.count == currentSize+4 {
-                                self.isPaginating = false
-                                self.tableView.reloadData()
-                                if(self.currentStartIndex + 4 <= self.urlArray.count-1) {
-                                    self.currentStartIndex = self.currentStartIndex + 4
-                                    
-                                }
-                                
-                                if(self.currentEndIndex + 4 > self.urlArray.count-1) {
-                                    self.currentEndIndex = self.urlArray.count-1
-                                    
-                                } else {
-                                    self.currentEndIndex = self.currentEndIndex + 4
-                                    
-                                }
-                                self.isPaginating = false
-                                self.tableView.tableFooterView = nil
-                                self.trace4images?.stop()
-                                self.startTracing4images = false
-                                if(self.images.count % 4 == 0) {
-                                    shouldDownload = false
-                                }
-                                
-                                return
-                            }
-                        case .failure(let error):
-                            print("Error: \(error)")
-                            self.isPaginating = false
-                            self.tableView.tableFooterView = nil
-                        }
-                    }
+                    retrieveImage(element: element, currentSize: currentSize)
                 } else {
                     continue
                 }
-                
             }
-            
-            
-            
         }
     }
     
