@@ -72,9 +72,17 @@ class ViewController: UIViewController {
     
     func startFirebasePerformanceTracking(keyText: String) {
         if(hasStartedTracing4images == false) {
-            trace4images = Performance.startTrace(name: keyText)
+            let firebaseText = keyText + " " + imageSizeName
+            trace4images = Performance.startTrace(name: firebaseText)
             hasStartedTracing4images = true
+
         }
+        
+        if(keyText == "Downloading 1 image") {
+            let firebaseText = keyText + " " + imageSizeName
+            trace1image = Performance.startTrace(name: firebaseText)
+        }
+        
     }
     
     
@@ -137,6 +145,7 @@ class ViewController: UIViewController {
                 if self.hasDownloaded4MorePictures(currentSize: currentSize) {
                     self.updateTableViewAndData()
                     self.stopFirebaseTracking(trace: self.trace4images)
+                    self.hasStartedTracing4images = false
                     if(self.images.count % 4 == 0) {
                         self.shouldDownload = false
                     }
@@ -171,7 +180,6 @@ class ViewController: UIViewController {
     }
     
     func stopFirebaseTracking(trace: FirebasePerformance.Trace?) {
-        self.hasStartedTracing4images = false
         trace?.stop()
     }
     
