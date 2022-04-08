@@ -136,25 +136,25 @@ class ViewController: UIViewController {
         startFirebasePerformanceTracking(keyText: "Downloading 1 image")
         activateSpinnerInTableView()
         let resource = ImageResource(downloadURL:element)
-        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { [weak self] result in
             switch result {
             case .success(let value):
-                self.images.append(value.image)
-                self.stopFirebaseTracking(trace: self.trace1image)
-                self.hideSpinnerInTableView()
-                if self.hasDownloaded4MorePictures(currentSize: currentSize) {
-                    self.updateTableViewAndData()
-                    self.stopFirebaseTracking(trace: self.trace4images)
-                    self.hasStartedTracing4images = false
-                    if(self.images.count % 4 == 0) {
-                        self.shouldDownload = false
+                self?.images.append(value.image)
+                self?.stopFirebaseTracking(trace: self?.trace1image)
+                self?.hideSpinnerInTableView()
+                if ((self?.hasDownloaded4MorePictures(currentSize: currentSize)) != nil) {
+                    self?.updateTableViewAndData()
+                    self?.stopFirebaseTracking(trace: self?.trace4images)
+                    self?.hasStartedTracing4images = false
+                    if((self?.images.count ?? 0) % 4 == 0) {
+                        self?.shouldDownload = false
                     }
                     return
                 }
             case .failure(let error):
                 print("Error: \(error)")
-                self.isPaginating = false
-                self.tableView.tableFooterView = nil
+                self?.isPaginating = false
+                self?.tableView.tableFooterView = nil
             }
         }
         
@@ -203,12 +203,12 @@ class ViewController: UIViewController {
         spinner.startAnimating()
         tableView.backgroundView = spinner
         let networkingClient: NetworkingClient = NetworkingClient(size: size)
-        networkingClient.execute { result in
+        networkingClient.execute { [weak self] result in
             
             switch result {
             case .success(let responsePosts):
-                self.urlArray = responsePosts
-                self.startMultipleImageDownload()
+                self?.urlArray = responsePosts
+                self?.startMultipleImageDownload()
             case .failure(let error):
                 print("ERROR - Getting data from the network client ", error)
             }
