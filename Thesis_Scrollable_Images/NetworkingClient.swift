@@ -9,8 +9,8 @@ import Firebase
 
 class NetworkingClient {
     var imageSizeString = "632kb"
-    init(size: String) {
-        imageSizeString = size
+    init(size: String?) {
+        imageSizeString = size ?? "632kb"
         urlArray.removeAll()
     }
     
@@ -53,4 +53,13 @@ class NetworkingClient {
             }
         })
     }
+        
+    func startFirebaseTracking(keyName: String, imageSizeName: String) {
+        FirebaseTracking.startFirebasePerformanceTracking(keyText: keyName, size: imageSizeName)
+    }
+    
+    func stopFirebaseTracking(keyName: String) {
+        FirebaseTracking.stopFirebaseTracking(keyName)
+    }
+    
 }

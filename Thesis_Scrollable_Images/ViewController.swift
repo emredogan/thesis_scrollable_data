@@ -7,8 +7,6 @@
 
 import UIKit
 import Kingfisher
-import FirebasePerformance
-
 
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -18,15 +16,16 @@ class ViewController: UIViewController {
     private var isPaginating = false
     var currentStartIndex = 0
     var currentEndIndex = 4
-    var hasStartedTracing4images = false
-    var trace4images: FirebasePerformance.Trace?
-    var trace1image: FirebasePerformance.Trace?
+    static var hasStartedTracing4images = false
+    
+    var networkingClient = NetworkingClient(size: nil)
+    
     var shouldDownload = true
     var imageSizeName  = "632kb"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        clearCache()
+        Utilities.clearCache()
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
@@ -58,7 +57,7 @@ class ViewController: UIViewController {
     }
     
     func restartData() {
-        clearCache()
+        Utilities.clearCache()
         urlArray = [URL]()
         images = [UIImage]()
         tableView.setContentOffset(.zero, animated: true)
@@ -66,47 +65,8 @@ class ViewController: UIViewController {
         isPaginating = false
         currentStartIndex = 0
         currentEndIndex = 4
-        hasStartedTracing4images = false
+        ViewController.hasStartedTracing4images = false
         makeANetworkCall(size: imageSizeName)
-    }
-    
-    func startFirebasePerformanceTracking(keyText: String) {
-        if(hasStartedTracing4images == false) {
-            let firebaseText = keyText + " " + imageSizeName
-            trace4images = Performance.startTrace(name: firebaseText)
-            hasStartedTracing4images = true
-
-        }
-        
-        if(keyText == "Downloading 1 image") {
-            let firebaseText = keyText + " " + imageSizeName
-            trace1image = Performance.startTrace(name: firebaseText)
-        }
-        
-    }
-    
-    
-    func clearCache(){
-        let trace = Performance.startTrace(name: "clearing cache")
-        
-        let cacheURL =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        let fileManager = FileManager.default
-        do {
-            // Get the directory contents urls (including subfolders urls)
-            let directoryContents = try FileManager.default.contentsOfDirectory( at: cacheURL, includingPropertiesForKeys: nil, options: [])
-            for file in directoryContents {
-                do {
-                    try fileManager.removeItem(at: file)
-                }
-                catch let error as NSError {
-                    debugPrint("Ooops! Something went wrong: \(error)")
-                }
-                
-            }
-            trace?.stop()
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
     }
     
     func shouldHideFooter() -> Bool {
@@ -132,8 +92,8 @@ class ViewController: UIViewController {
     }
     
     func retrieveImage(element: URL, currentSize: Int) {
-        startFirebasePerformanceTracking(keyText: "Downloading 4 images")
-        startFirebasePerformanceTracking(keyText: "Downloading 1 image")
+        firebaseTracking.startFirebasePerformanceTracking(keyText: "Downloading 4 images", size: imageSizeName)
+        firebaseTracking.startFirebasePerformanceTracking(keyText: "Downloading 1 image", size: imageSizeName)
         activateSpinnerInTableView()
         let resource = ImageResource(downloadURL:element)
         KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { [weak self] result in
@@ -145,7 +105,7 @@ class ViewController: UIViewController {
                 if ((self?.hasDownloaded4MorePictures(currentSize: currentSize)) != nil) {
                     self?.updateTableViewAndData()
                     self?.stopFirebaseTracking(trace: self?.trace4images)
-                    self?.hasStartedTracing4images = false
+                    ViewController.hasStartedTracing4images = false
                     if((self?.images.count ?? 0) % 4 == 0) {
                         self?.shouldDownload = false
                     }
@@ -179,9 +139,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func stopFirebaseTracking(trace: FirebasePerformance.Trace?) {
-        trace?.stop()
-    }
+
     
     func startMultipleImageDownload() {
         let currentSize = self.images.count
@@ -202,7 +160,7 @@ class ViewController: UIViewController {
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         tableView.backgroundView = spinner
-        let networkingClient: NetworkingClient = NetworkingClient(size: size)
+        networkingClient = NetworkingClient(size: size)
         networkingClient.execute { [weak self] result in
             
             switch result {
