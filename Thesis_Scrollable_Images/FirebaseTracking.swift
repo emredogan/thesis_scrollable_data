@@ -13,10 +13,6 @@ struct FirebaseTracking {
     static var trace1image: FirebasePerformance.Trace?
     static var cache: FirebasePerformance.Trace?
     
-    @available(*, unavailable) private init() {}
-
-    
-    
     static func startFirebasePerformanceTracking(keyText: String, size: String?) {
         switch keyText {
         case Constants.Firebase.track1imageString:

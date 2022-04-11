@@ -6,20 +6,28 @@
 //
 import Foundation
 import Firebase
+import Kingfisher
 
 class NetworkingClient {
     var imageSizeString = "632kb"
+    var shouldDownload = true
+
+    
     init(size: String?) {
         imageSizeString = size ?? "632kb"
         urlArray.removeAll()
     }
     
     var urlArray = [URL]()
+    var images = [UIImage]()
+
     let numberOfPicturesToDownload = 30
     
-    typealias CompletionHandler = (Result<[URL], Error>) -> Void
+    typealias CompletionHandlerURL = (Result<[URL], Error>) -> Void
+    typealias CompletionHandlerImage = (Result<[UIImage], Error>) -> Void
+
     
-    func execute(completionHandler: @escaping CompletionHandler){
+    func execute(completionHandler: @escaping CompletionHandlerURL){
         let trace = Performance.startTrace(name: "Downloading urls")
 
         // Get a reference to the storage service using the default Firebase App
@@ -53,13 +61,44 @@ class NetworkingClient {
             }
         })
     }
+    
+    func retrieveImage(element: URL, currentSize: Int, completionHandler: @escaping CompletionHandlerImage) {
+        FirebaseTracking.startFirebasePerformanceTracking(keyText: Constants.Firebase.track4imageString, size: imageSizeString)
+        FirebaseTracking.startFirebasePerformanceTracking(keyText: Constants.Firebase.track1imageString, size: imageSizeString)
+        
+        let resource = ImageResource(downloadURL:element)
+        
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { [weak self] result in
+            switch result {
+            case .success(let value):
+                self?.images.append(value.image)
+                self?.stopFirebaseTracking(keyName: Constants.Firebase.track1imageString)
+                if ((self?.hasDownloaded4MorePictures(currentSize: currentSize)) != nil) {
+                    completionHandler(.success(self!.images))
+                    self?.stopFirebaseTracking(keyName: Constants.Firebase.track4imageString)
+                    ViewController.hasStartedTracing4images = false
+                    if((self?.images.count ?? 0) % 4 == 0) {
+                        self?.shouldDownload = false
+                    }
+                    return
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+
+    }
+    
+    func hasDownloaded4MorePictures(currentSize: Int) -> Bool {
+        return self.images.count == currentSize+4
+    }
         
     func startFirebaseTracking(keyName: String, imageSizeName: String) {
         FirebaseTracking.startFirebasePerformanceTracking(keyText: keyName, size: imageSizeName)
     }
     
     func stopFirebaseTracking(keyName: String) {
-        FirebaseTracking.stopFirebaseTracking(keyName)
+        FirebaseTracking.stopFirebaseTracking(keyName: keyName)
     }
     
 }

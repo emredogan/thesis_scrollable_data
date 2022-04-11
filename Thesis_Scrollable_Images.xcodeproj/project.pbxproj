@@ -87,13 +87,13 @@
 				6308E9FD28034455003180F2 /* Utilities.swift */,
 				63D8884F27B7E29F00C1B1B4 /* FBImage.swift */,
 				63D8885327B7E53A00C1B1B4 /* NetworkingClient.swift */,
+				6308EA01280360AB003180F2 /* Constants.swift */,
 				6308E9FF280344CC003180F2 /* FirebaseTracking.swift */,
 				63D8884127B7E19900C1B1B4 /* Main.storyboard */,
 				63D8884427B7E19B00C1B1B4 /* Assets.xcassets */,
 				63D8884627B7E19C00C1B1B4 /* LaunchScreen.storyboard */,
 				63D8884927B7E19C00C1B1B4 /* Info.plist */,
 				63A3055D27D11E6800993F4B /* GoogleService-Info.plist */,
-				6308EA01280360AB003180F2 /* Constants.swift */,
 			);
 			path = Thesis_Scrollable_Images;
 			sourceTree = "<group>";

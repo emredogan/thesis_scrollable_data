@@ -6,13 +6,10 @@
 //
 
 import UIKit
-import Kingfisher
 
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    var urlArray = [URL]()
-    var images = [UIImage]()
     private var isPaginating = false
     var currentStartIndex = 0
     var currentEndIndex = 4
@@ -20,7 +17,6 @@ class ViewController: UIViewController {
     
     var networkingClient = NetworkingClient(size: nil)
     
-    var shouldDownload = true
     var imageSizeName  = "632kb"
     
     override func viewDidLoad() {
@@ -58,8 +54,7 @@ class ViewController: UIViewController {
     
     func restartData() {
         Utilities.clearCache()
-        urlArray = [URL]()
-        images = [UIImage]()
+        networkingClient = NetworkingClient(size: nil)
         tableView.setContentOffset(.zero, animated: true)
         tableView.reloadData()
         isPaginating = false
@@ -70,20 +65,17 @@ class ViewController: UIViewController {
     }
     
     func shouldHideFooter() -> Bool {
-        return images.count >= urlArray.count - 5
+        return networkingClient.images.count >= networkingClient.urlArray.count - 5
     }
     
-    func hasDownloaded4MorePictures(currentSize: Int) -> Bool {
-        return self.images.count == currentSize+4
-    }
     
     func updateIndexesForTheNextDownload() {
-        if(self.currentStartIndex + 4 <= self.urlArray.count-1) {
+        if(self.currentStartIndex + 4 <= networkingClient.urlArray.count-1) {
             self.currentStartIndex = self.currentStartIndex + 4
         }
         
-        if(self.currentEndIndex + 4 > self.urlArray.count-1) {
-            self.currentEndIndex = self.urlArray.count-1
+        if(self.currentEndIndex + 4 > networkingClient.urlArray.count-1) {
+            self.currentEndIndex = networkingClient.urlArray.count-1
             
         } else {
             self.currentEndIndex = self.currentEndIndex + 4
@@ -92,31 +84,17 @@ class ViewController: UIViewController {
     }
     
     func retrieveImage(element: URL, currentSize: Int) {
-        firebaseTracking.startFirebasePerformanceTracking(keyText: "Downloading 4 images", size: imageSizeName)
-        firebaseTracking.startFirebasePerformanceTracking(keyText: "Downloading 1 image", size: imageSizeName)
+        
+        
+        // NEW
         activateSpinnerInTableView()
-        let resource = ImageResource(downloadURL:element)
-        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { [weak self] result in
-            switch result {
-            case .success(let value):
-                self?.images.append(value.image)
-                self?.stopFirebaseTracking(trace: self?.trace1image)
-                self?.hideSpinnerInTableView()
-                if ((self?.hasDownloaded4MorePictures(currentSize: currentSize)) != nil) {
-                    self?.updateTableViewAndData()
-                    self?.stopFirebaseTracking(trace: self?.trace4images)
-                    ViewController.hasStartedTracing4images = false
-                    if((self?.images.count ?? 0) % 4 == 0) {
-                        self?.shouldDownload = false
-                    }
-                    return
-                }
-            case .failure(let error):
-                print("Error: \(error)")
-                self?.isPaginating = false
-                self?.tableView.tableFooterView = nil
-            }
+
+        
+        networkingClient.retrieveImage(element: element, currentSize: currentSize) { [weak self] result in
+            self?.updateTableViewAndData()
+
         }
+        // NEW
         
     }
     
@@ -142,11 +120,11 @@ class ViewController: UIViewController {
 
     
     func startMultipleImageDownload() {
-        let currentSize = self.images.count
-        shouldDownload = true
+        let currentSize = networkingClient.images.count
+        networkingClient.shouldDownload = true
         
-        for (index, element) in urlArray.enumerated() {
-            if(shouldDownload) {
+        for (index, element) in networkingClient.urlArray.enumerated() {
+            if(networkingClient.shouldDownload) {
                 if(index >= currentStartIndex && index < currentEndIndex) {
                     retrieveImage(element: element, currentSize: currentSize)
                 } else {
@@ -165,7 +143,7 @@ class ViewController: UIViewController {
             
             switch result {
             case .success(let responsePosts):
-                self?.urlArray = responsePosts
+                self?.networkingClient.urlArray = responsePosts
                 self?.startMultipleImageDownload()
             case .failure(let error):
                 print("ERROR - Getting data from the network client ", error)
@@ -182,13 +160,13 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return images.count
+        return networkingClient.images.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "photo_cell", for: indexPath) as! PostTableViewCell
-        if(urlArray.count > 0) {
-            cell.postImageView.image = images[indexPath.row]
+        if(networkingClient.urlArray.count > 0) {
+            cell.postImageView.image = networkingClient.images[indexPath.row]
         }
         return cell
     }
@@ -209,7 +187,7 @@ extension ViewController: UITableViewDataSource {
         }
         
         if(isPaginating == false) {
-            if indexPath.row + 1 == images.count {
+            if indexPath.row + 1 == networkingClient.images.count {
                 startMultipleImageDownload()
             }
             
