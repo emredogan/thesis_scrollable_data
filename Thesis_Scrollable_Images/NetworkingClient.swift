@@ -11,6 +11,9 @@ import Kingfisher
 class NetworkingClient {
     private var imageSizeString = Constants.ImageSizes.low632
     var shouldDownload = true
+    
+    var currentStartIndex = 0
+    var currentEndIndex = 4
 
     
     init(size: String?) {
@@ -60,6 +63,20 @@ class NetworkingClient {
                 }
             }
         })
+    }
+    
+    func updateIndexesForTheNextDownload() {
+        if(self.currentStartIndex + 4 <= urlArray.count-1) {
+            self.currentStartIndex = self.currentStartIndex + 4
+        }
+        
+        if(self.currentEndIndex + 4 > urlArray.count-1) {
+            self.currentEndIndex = urlArray.count-1
+            
+        } else {
+            self.currentEndIndex = self.currentEndIndex + 4
+            
+        }
     }
     
     func retrieveImage(element: URL, currentSize: Int, completionHandler: @escaping CompletionHandlerImage) {

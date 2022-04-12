@@ -11,8 +11,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     private var isPaginating = false
-    var currentStartIndex = 0
-    var currentEndIndex = 4
+    
     static var hasStartedTracing4images = false
     
     var networkingClient = NetworkingClient(size: nil)
@@ -57,8 +56,6 @@ class ViewController: UIViewController {
         tableView.setContentOffset(.zero, animated: true)
         tableView.reloadData()
         isPaginating = false
-        currentStartIndex = 0
-        currentEndIndex = 4
         ViewController.hasStartedTracing4images = false
         makeANetworkCall(size: imageSizeName)
     }
@@ -68,19 +65,7 @@ class ViewController: UIViewController {
     }
     
     
-    func updateIndexesForTheNextDownload() {
-        if(self.currentStartIndex + 4 <= networkingClient.urlArray.count-1) {
-            self.currentStartIndex = self.currentStartIndex + 4
-        }
-        
-        if(self.currentEndIndex + 4 > networkingClient.urlArray.count-1) {
-            self.currentEndIndex = networkingClient.urlArray.count-1
-            
-        } else {
-            self.currentEndIndex = self.currentEndIndex + 4
-            
-        }
-    }
+    
     
     func retrieveImage(element: URL, currentSize: Int) {
         activateSpinnerInTableView()
@@ -93,7 +78,7 @@ class ViewController: UIViewController {
     func updateTableViewAndData() {
         self.isPaginating = false
         self.tableView.reloadData()
-        self.updateIndexesForTheNextDownload()
+        networkingClient.updateIndexesForTheNextDownload()
         hideSpinnerInTableView()
         
     }
@@ -117,7 +102,7 @@ class ViewController: UIViewController {
         
         for (index, element) in networkingClient.urlArray.enumerated() {
             if(networkingClient.shouldDownload) {
-                if(index >= currentStartIndex && index < currentEndIndex) {
+                if(index >= networkingClient.currentStartIndex && index < networkingClient.currentEndIndex) {
                     retrieveImage(element: element, currentSize: currentSize)
                 } else {
                     continue
