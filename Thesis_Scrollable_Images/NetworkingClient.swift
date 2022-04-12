@@ -9,12 +9,12 @@ import Firebase
 import Kingfisher
 
 class NetworkingClient {
-    var imageSizeString = "632kb"
+    private var imageSizeString = Constants.ImageSizes.low632
     var shouldDownload = true
 
     
     init(size: String?) {
-        imageSizeString = size ?? "632kb"
+        imageSizeString = size ?? Constants.ImageSizes.low632
         urlArray.removeAll()
     }
     
@@ -28,7 +28,7 @@ class NetworkingClient {
 
     
     func execute(completionHandler: @escaping CompletionHandlerURL){
-        let trace = Performance.startTrace(name: "Downloading urls")
+        FirebaseTracking.stopFirebaseTracking(keyName: Constants.Firebase.downloadURL)
 
         // Get a reference to the storage service using the default Firebase App
         let storage = Storage.storage()
@@ -51,7 +51,7 @@ class NetworkingClient {
                         if let url = url {
                             self.urlArray.append(url)
                             if(self.urlArray.count == self.numberOfPicturesToDownload) {
-                                trace?.stop()
+                                FirebaseTracking.stopFirebaseTracking(keyName: Constants.Firebase.downloadURL)
                                 completionHandler(.success(self.urlArray))
                                 return
                             }

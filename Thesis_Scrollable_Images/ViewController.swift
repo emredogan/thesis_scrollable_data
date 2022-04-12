@@ -16,8 +16,7 @@ class ViewController: UIViewController {
     static var hasStartedTracing4images = false
     
     var networkingClient = NetworkingClient(size: nil)
-    
-    var imageSizeName  = "632kb"
+    var imageSizeName  = Constants.ImageSizes.low632
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,19 +31,19 @@ class ViewController: UIViewController {
     @IBAction func segmentChanged(_ sender: Any) {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            imageSizeName = "632kb"
+            imageSizeName = Constants.ImageSizes.low632
             break
         case 1 :
-            imageSizeName = "1038kb"
+            imageSizeName = Constants.ImageSizes.low1038
             break
         case 2 :
-            imageSizeName = "1450kb"
+            imageSizeName = Constants.ImageSizes.medium1450
             break
         case 3 :
-            imageSizeName = "1926kb"
+            imageSizeName = Constants.ImageSizes.high1926
             break
         case 4 :
-            imageSizeName = "2470kb"
+            imageSizeName = Constants.ImageSizes.high2470
             break
         default:
             break
@@ -84,25 +83,18 @@ class ViewController: UIViewController {
     }
     
     func retrieveImage(element: URL, currentSize: Int) {
-        
-        
-        // NEW
         activateSpinnerInTableView()
 
-        
         networkingClient.retrieveImage(element: element, currentSize: currentSize) { [weak self] result in
             self?.updateTableViewAndData()
-
         }
-        // NEW
-        
     }
     
     func updateTableViewAndData() {
         self.isPaginating = false
         self.tableView.reloadData()
         self.updateIndexesForTheNextDownload()
-        self.tableView.tableFooterView = nil
+        hideSpinnerInTableView()
         
     }
     
