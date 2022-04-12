@@ -64,7 +64,7 @@ class ViewController: UIViewController {
     }
     
     func shouldHideFooter() -> Bool {
-        return networkingClient.images.count >= networkingClient.urlArray.count - 5
+        return networkingClient.shouldHideFooter()
     }
     
     

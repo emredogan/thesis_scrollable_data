@@ -101,4 +101,8 @@ class NetworkingClient {
         FirebaseTracking.stopFirebaseTracking(keyName: keyName)
     }
     
+    func shouldHideFooter() -> Bool {
+        return images.count >= urlArray.count - 5
+    }
+    
 }
